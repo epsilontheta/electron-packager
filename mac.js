@@ -15,7 +15,7 @@ class MacApp {
     this.appName = opts.name
     this.operations = []
     this.renamedAppPath = path.join(this.stagingPath, `${common.sanitizeAppName(this.appName)}.app`)
-    this.electronAppPath = path.join(this.stagingPath, 'Electron.app')
+    this.electronAppPath = path.join(this.stagingPath, 'Brave.app')
     this.contentsPath = path.join(this.electronAppPath, 'Contents')
     this.frameworksPath = path.join(this.contentsPath, 'Frameworks')
     this.resourcesPath = path.join(this.contentsPath, 'Resources')
@@ -89,9 +89,9 @@ class MacApp {
 
   updatePlistFiles () {
     let appPlistFilename = path.join(this.contentsPath, 'Info.plist')
-    let helperPlistFilename = this.ehPlistFilename('Electron Helper.app')
-    let helperEHPlistFilename = this.ehPlistFilename('Electron Helper EH.app')
-    let helperNPPlistFilename = this.ehPlistFilename('Electron Helper NP.app')
+    let helperPlistFilename = this.ehPlistFilename('Brave Helper.app')
+    let helperEHPlistFilename = this.ehPlistFilename('Brave Helper EH.app')
+    let helperNPPlistFilename = this.ehPlistFilename('Brave Helper NP.app')
     this.appPlist = this.loadPlist(appPlistFilename)
     let helperPlist = this.loadPlist(helperPlistFilename)
     let helperEHPlist = this.loadPlist(helperEHPlistFilename)
@@ -140,11 +140,11 @@ class MacApp {
   moveHelpers (callback) {
     series([' Helper', ' Helper EH', ' Helper NP'].map((suffix) => {
       return (cb) => {
-        let executableBasePath = path.join(this.frameworksPath, `Electron${suffix}.app`, 'Contents', 'MacOS')
+        let executableBasePath = path.join(this.frameworksPath, `Brave${suffix}.app`, 'Contents', 'MacOS')
 
-        common.rename(executableBasePath, `Electron${suffix}`, `${common.sanitizeAppName(this.appName)}${suffix}`, (err) => {
+        common.rename(executableBasePath, `Brave${suffix}`, `${common.sanitizeAppName(this.appName)}${suffix}`, (err) => {
           if (err) return cb(err)
-          common.rename(this.frameworksPath, `Electron${suffix}.app`, `${common.sanitizeAppName(this.appName)}${suffix}.app`, cb)
+          common.rename(this.frameworksPath, `Brave${suffix}.app`, `${common.sanitizeAppName(this.appName)}${suffix}.app`, cb)
         })
       }
     }), (err) => {
@@ -178,7 +178,7 @@ class MacApp {
   enqueueRenamingElectronBinary () {
     this.operations.push((cb) => {
       common.rename(path.join(this.contentsPath, 'MacOS'),
-                    'Electron',
+                    'Brave',
                     this.appPlist.CFBundleExecutable,
                     cb)
     })
@@ -261,7 +261,7 @@ function createSignOpts (properties, platform, app, version, quiet) {
 
 module.exports = {
   createApp: function createApp (opts, templatePath, callback) {
-    let appRelativePath = path.join('Electron.app', 'Contents', 'Resources', 'app')
+    let appRelativePath = path.join('Brave.app', 'Contents', 'Resources', 'app')
     common.initializeApp(opts, templatePath, appRelativePath, function buildMacApp (err, stagingPath) {
       if (err) return callback(err)
 

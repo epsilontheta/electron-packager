@@ -52,7 +52,7 @@ module.exports = {
       let newExeName = `${common.sanitizeAppName(opts.name)}.exe`
       var operations = [
         function (cb) {
-          common.rename(tempPath, 'electron.exe', newExeName, cb)
+          common.rename(tempPath, 'brave.exe', newExeName, cb)
         }
       ]
 
